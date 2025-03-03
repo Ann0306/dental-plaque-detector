@@ -1,0 +1,7 @@
+names:
+  0: tooth
+  1: plaque
+path: C:\dental_plaque_app\data
+test: test\images
+train: train\images
+val: val\images
