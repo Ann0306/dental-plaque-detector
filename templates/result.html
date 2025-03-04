@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>치아 치석 분석 결과</title>
+    <title>치석 평가 결과</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -89,7 +89,7 @@
             border-radius: 3px;
         }
         .tooth-color {
-            background-color: #28a745;
+            background-color: #007bff;
         }
         .plaque-color {
             background-color: #dc3545;
@@ -109,7 +109,7 @@
     <div class="container">
         <div class="main-container">
             <div class="header">
-                <h1>치아 치석 분석 결과</h1>
+                <h1>치석 분석 결과</h1>
             </div>
 
             {% if results.error %}
@@ -151,7 +151,7 @@
             </div>
 
             <div class="analysis-results">
-                <h4 class="text-center mb-3">치석 분석 결과</h4>
+                <h4 class="text-center mb-3">치석 평가 결과</h4>
                 
                 <div class="row mb-2">
                     <div class="col-md-6">
@@ -179,12 +179,14 @@
                         {% elif results.plaque_ratio < 30 %}alert-warning
                         {% else %}alert-danger{% endif %}">
                         
-                        {% if results.plaque_ratio < 10 %}
+                        {% if results.plaque_ratio < 1 %}
                             <strong>양호:</strong> 치석 비율이 낮습니다. 현재 구강 관리가 잘 되고 있습니다.
-                        {% elif results.plaque_ratio < 30 %}
-                            <strong>주의:</strong> 치석이 어느 정도 감지되었습니다. 구강 관리에 더 신경 써야 할 수 있습니다.
+                        {% elif results.plaque_ratio < 5 %}
+                            <strong>양호:</strong> 치석이 어느 정도 감지되었습니다. 구강 관리에 더 신경 써야 할 수 있습니다.
+                        {% elif results.plaque_ratio < 20 %}
+                            <strong>주의:</strong> 치석이 비교적 많이 감지되었습니다. 치과에 방문해서 구강관리를 받기를 권장합니다.
                         {% else %}
-                            <strong>위험:</strong> 치석 비율이 높습니다. 치과 검진을 권장합니다.
+                            <strong>위험:</strong> 치석 비율이 매우 높습니다. 가능한 빨리 치과에 방문해서 구강 관리를 받아야 합니다.
                         {% endif %}
                     </div>
                 </div>
@@ -192,7 +194,7 @@
             {% endif %}
 
             <div class="text-center">
-                <a href="/" class="btn btn-return">다시 분석하기</a>
+                <a href="/" class="btn btn-return">처음으로</a>
             </div>
         </div>
     </div>
@@ -201,17 +203,22 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             {% if not results.error and results.plaque_ratio %}
-            // 퍼센트 바 애니메이션
-            const percentageBar = document.getElementById('plaque-percentage-bar');
             const plaqueRatio = {{ results.plaque_ratio }};
-            
-            // 최대 100%로 제한
             const cappedRatio = Math.min(plaqueRatio, 100);
-            
-            // 애니메이션으로 퍼센트 바 채우기
-            setTimeout(() => {
-                percentageBar.style.width = cappedRatio + '%';
-            }, 100);
+
+            function animatePercentageBar() {
+                const percentageBar = document.getElementById('plaque-percentage-bar');
+                if (cappedRatio === 0) {
+                    percentageBar.style.backgroundColor = '#ffffff';
+                    percentageBar.style.width = '100%';
+                } else {
+                    percentageBar.style.backgroundColor = '#dc3545';
+                    percentageBar.style.width = cappedRatio + '%';
+                }
+                percentageBar.setAttribute('aria-valuenow', cappedRatio);
+            }
+
+            setTimeout(animatePercentageBar, 100);
             {% endif %}
         });
     </script>

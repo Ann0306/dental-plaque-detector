@@ -2,6 +2,7 @@ import os
 import sys
 import cv2
 import numpy as np
+import torch
 
 # Patch for the Git issue - apply before importing ultralytics
 import subprocess
@@ -55,6 +56,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드
 try:
     model = YOLO(MODEL_PATH)
     print(f"Model loaded successfully from {MODEL_PATH}")
+    device = torch.device('cpu')  # 또는 'cuda'로 설정하여 GPU 사용
+    model.to(device)
 except Exception as e:
     print(f"Warning: Could not load model from {MODEL_PATH}. Error: {e}")
     print("Will attempt to use a pretrained YOLO model instead.")
@@ -97,7 +100,7 @@ def visualize_segmentation(image, masks, classes):
     
     # 클래스별 색상 설정 (BGR 형식)
     colors = {
-        0: (0, 255, 0),    # 치아: 초록색
+        0: (255, 0, 0),    # 치아: 파란색
         1: (0, 0, 255)     # 치석: 빨간색
     }
     
@@ -195,17 +198,12 @@ def process_image(image_path):
                 result_data['plaque_ratio'] = round(plaque_ratio, 2)
                 
                 # 세그먼테이션 결과 시각화
-                result_image, mask_image = visualize_segmentation(image, resized_masks, classes)
+                result_image, _ = visualize_segmentation(image, resized_masks, classes)
                 
                 # 결과 이미지 저장
                 result_image_path = os.path.join(app.config['UPLOAD_FOLDER'], f"result_{os.path.basename(image_path)}")
                 cv2.imwrite(result_image_path, result_image)
                 result_data['result_image'] = os.path.basename(result_image_path)
-                
-                if mask_image is not None:
-                    mask_image_path = os.path.join(app.config['UPLOAD_FOLDER'], f"mask_{os.path.basename(image_path)}")
-                    cv2.imwrite(mask_image_path, mask_image)
-                    result_data['mask_image'] = os.path.basename(mask_image_path)
             except Exception as e:
                 result_data['error'] = f"Error processing segmentation results: {str(e)}"
         else:

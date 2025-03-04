@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>치아 치석 감지 시스템</title>
+    <title>치석 평가 시스템</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -70,8 +70,8 @@
     <div class="container">
         <div class="main-container">
             <div class="header">
-                <h1>치아 치석 감지 시스템</h1>
-                <p class="lead">치아 사진을 업로드하여 치석 영역을 분석해보세요</p>
+                <h1>치석 평가 시스템</h1>
+                <p class="lead">구강 사진을 업로드하여 치석 영역을 분석해보세요</p>
             </div>
 
             <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
@@ -84,18 +84,18 @@
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-analyze" id="analyze-btn" disabled>분석하기</button>
+                    <button type="submit" class="btn btn-analyze" id="analyze-btn" disabled>평가하기</button>
                 </div>
             </form>
 
             <div class="info-section">
-                <h4>치석 감지 시스템 사용 방법</h4>
+                <h4>치석 평가 시스템 사용 방법</h4>
                 <ol>
-                    <li>치아 사진을 업로드합니다. (권장: 정면에서 촬영한 선명한 사진)</li>
-                    <li>"분석하기" 버튼을 클릭하여 AI가 치아와 치석을 분석하게 합니다.</li>
-                    <li>분석 결과에서 치석 비율과 시각화된 이미지를 확인합니다.</li>
+                    <li>구강 사진을 업로드합니다. (권장: 큐레이로 촬영한 선명한 사진)</li>
+                    <li>"평가하기" 버튼을 클릭하여 AI가 치아와 치석을 분석하게 합니다.</li>
+                    <li>평가 결과에서 치석 비율과 시각화된 이미지를 확인합니다.</li>
                 </ol>
-                <p class="text-muted">* 치석은 빨간색, 치아는 초록색으로 표시됩니다.</p>
+                <p class="text-muted">* 치석은 빨간색, 치아는 파란색으로 표시됩니다.</p>
                 <p class="text-muted">* 이 시스템은 정확한 의료 진단을 대체할 수 없으며, 참고용으로만 사용해주세요.</p>
             </div>
         </div>
